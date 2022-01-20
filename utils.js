@@ -1,4 +1,4 @@
-const Config = require('./config.json')
+import Config from './config.json'
 let crypto = window.crypto.subtle
 
 function arrayBufferToBase64(arrayBuffer) {

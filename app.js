@@ -1,4 +1,4 @@
-const {
+import {
     base64ToArrayBuffer,
     arrayBufferToBase64,
     toPrivatePem,
@@ -9,8 +9,8 @@ const {
     getAESCryptoKey,
     uIntToBase64,
     base64ToUint8
-} = require('./utils')
-const Config = require('./config.json')
+} from './utils'
+import Config from './config.json'
 
 let crypto = window.crypto.subtle
 
