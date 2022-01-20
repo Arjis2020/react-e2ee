@@ -32,7 +32,7 @@ would return something like:
 {
     cipher_text: /hfan3ulskxzkjr20mckmicurj38rmdkalclalor\dj3*, //base64
     aes_key: 9r2hnankal92/*gawaoaowrj38jma/daun, //base64
-    iv: 1hnfkalmnfinfkeif874fsf&bbdajwk9dkacam //bsae64
+    iv: 1hnfkalmnfinfkeif874fsf&bbdajwk9dkacam //base64
 }
 
 you can now wire this entire object to the recipient through eg: WebSockets
