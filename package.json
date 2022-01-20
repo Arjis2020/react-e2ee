@@ -1,0 +1,23 @@
+{
+  "name": "@chatereum/react-e2ee",
+  "version": "1.0.0",
+  "description": "A End-to-end encryption library for React and browser based JavaScript frameworks",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "e2ee",
+    "chatereum",
+    "react",
+    "react-e2ee",
+    "end-to-end-encryption",
+    "rsa",
+    "subtlecrypto",
+    "aes",
+    "diffie-hellman",
+    "ciphers"
+  ],
+  "author": "Arjis Chakraborty",
+  "license": "ISC"
+}
