@@ -8,7 +8,7 @@ npm install @chatereum/react-e2ee
 ```
 ## Usage
 
-Currently, this package can only be used using ```JavaScript```. ```TypeScript``` support is coming soon! :smiley:
+:fire:```TypeScript``` support is here! :smiley:
 
 ```javascript
 import E2EE from '@chatereum/react-e2ee';
