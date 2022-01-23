@@ -1,0 +1,16 @@
+{
+    "pre": {
+        "name": "AES-CBC",
+        "exports": "raw",
+        "length": 256
+    },
+    "main": {
+        "name": "RSA-OAEP",
+        "hash": "SHA-256",
+        "modulus": 4096,
+        "exports": {
+            "public": "spki",
+            "private": "pkcs8"
+        }
+    }
+}

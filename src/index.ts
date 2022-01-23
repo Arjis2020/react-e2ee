@@ -11,10 +11,11 @@ import {
     base64ToUint8
 } from './utils'
 import Config from './config.json'
+import { Formats } from './formats'
 
 let crypto = window.crypto.subtle
 
-function getKeys() {
+function getKeys(): Promise<{ public_key: string, private_key: string }> {
     return new Promise(async (resolve, reject) => {
         try {
             var RSA_KEY = await crypto.generateKey({
@@ -27,24 +28,15 @@ function getKeys() {
                 ["encrypt", "decrypt"]
             )
 
-            const spki_public_key = await crypto.exportKey(Config.main.exports.public, RSA_KEY.publicKey)
-            const pkcs8_private_key = await crypto.exportKey(Config.main.exports.private, RSA_KEY.privateKey)
+            const spki_public_key_format: Formats = Config.main.exports.public as Formats
+            const pkcs8_private_key_format: Formats = Config.main.exports.private as Formats
 
-            /* var AES_KEY = await crypto.generateKey(
-                {
-                    name: Config.pre.name,
-                    length: Config.pre.length
-                },
-                true,
-                ["encrypt", "decrypt"]
-            )
-
-            const raw_aes_key = await crypto.exportKey(Config.pre.exports, AES_KEY) */
+            const spki_public_key = await crypto.exportKey(spki_public_key_format, RSA_KEY.publicKey as CryptoKey)
+            const pkcs8_private_key = await crypto.exportKey(pkcs8_private_key_format, RSA_KEY.privateKey as CryptoKey)
 
             resolve({
                 public_key: toPublicPem(spki_public_key),
                 private_key: toPrivatePem(pkcs8_private_key),
-                //aes_key: arrayBufferToBase64(raw_aes_key)
             })
         }
         catch (err) {
@@ -53,11 +45,10 @@ function getKeys() {
     })
 }
 
-function encrypt(public_key, plainText = "") {
+function encrypt(public_key: string, plainText: string): Promise<{ cipher_text: string, aes_key: string, iv: string }> {
     return new Promise(async (resolve, reject) => {
         try {
             let rsa_crypto_key = await getPublicCryptoKey(public_key)
-            //let aes_crypto_key = await getAESCryptoKey(aes_key)
 
             let encoded_text = encodeMessage(plainText)
 
@@ -70,7 +61,9 @@ function encrypt(public_key, plainText = "") {
                 ["encrypt", "decrypt"]
             )
 
-            const raw_aes_key = arrayBufferToBase64(await crypto.exportKey(Config.pre.exports, AES_KEY))
+            const raw_aes_key_format: Formats = Config.pre.exports as Formats
+
+            const raw_aes_key = arrayBufferToBase64(await crypto.exportKey(raw_aes_key_format, AES_KEY))
 
             let encoded_aes = encodeMessage(raw_aes_key)
 
@@ -88,7 +81,7 @@ function encrypt(public_key, plainText = "") {
                 {
                     name: Config.main.name
                 },
-                rsa_crypto_key,
+                rsa_crypto_key as CryptoKey,
                 encoded_aes
             )
 
@@ -104,7 +97,7 @@ function encrypt(public_key, plainText = "") {
     })
 }
 
-function decrypt(aes_key, iv, private_key, encrypted_text) {
+function decrypt(aes_key: string, iv: string, private_key: string, encrypted_text: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
         try {
             let rsa_crypto_key = await getPrivateCryptoKey(private_key)
@@ -114,7 +107,7 @@ function decrypt(aes_key, iv, private_key, encrypted_text) {
                 {
                     name: Config.main.name
                 },
-                rsa_crypto_key,
+                rsa_crypto_key as CryptoKey,
                 base64ToArrayBuffer(window.atob(aes_key))
             )
 
@@ -127,7 +120,7 @@ function decrypt(aes_key, iv, private_key, encrypted_text) {
                     name: Config.pre.name,
                     iv: base64ToUint8(iv)
                 },
-                aes_crypto_key,
+                aes_crypto_key as CryptoKey,
                 base64ToArrayBuffer(window.atob(encrypted_text))
             )
 
