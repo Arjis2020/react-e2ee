@@ -1,6 +1,6 @@
 {
   "name": "@chatereum/react-e2ee",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A End-to-end encryption library for React and browser based JavaScript frameworks",
   "main": "ts/index.js",
   "types": "ts",
@@ -11,7 +11,7 @@
   "homepage": "https://github.com/Arjis2020/react-e2ee",
   "scripts": {
     "start": "node app.js",
-    "publish": "git add . && git commit -m \"%npm_config_message%\" && git push origin main && npm publish",
+    "publish": "git add . && git commit -m \"%npm_config_message%\" && git push origin main",
     "build" : "npx tsc -p ."
   },
   "keywords": [

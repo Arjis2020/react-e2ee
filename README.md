@@ -8,7 +8,7 @@ npm install @chatereum/react-e2ee
 ```
 ## Usage
 
-:fire:```TypeScript``` support is here! :smiley:
+![typescript](https://img.icons8.com/color/48/000000/typescript.png) support is here! :smiley:
 
 ```javascript
 import E2EE from '@chatereum/react-e2ee';
