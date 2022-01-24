@@ -1,15 +1,25 @@
 # React E2EE
 
+An end-to-end encryption package that is basically a wrapper package of ```SubtleCrypto``` library for browers (specifically React). See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto).
+
+![typescript](https://img.icons8.com/color/48/000000/typescript.png) support is here! :smiley:
+
 ## Installation
 
 Use the package manager [npm](https://nmjs.com/) to install react-e2ee.
 ```bash
 npm install @chatereum/react-e2ee
 ```
+
+### What's New? :fire:
+
+Changelogs ```v2.1.0```
+- ```encryptFile()``` function has the capability to end-to-end encrypt files. See **Usage**
+-  ```decryptFile()``` function has the capability to decrypt encrypted files. See **Usage**
+
 ## Usage
 
-![typescript](https://img.icons8.com/color/48/000000/typescript.png) support is here! :smiley:
-
+#### General usage
 ```javascript
 import E2EE from '@chatereum/react-e2ee';
 
@@ -51,6 +61,41 @@ would return the original message:
 decrypted = "Made with 💙 by Arjis Chakraborty"
 
 you can now show this message on the recipient's frontend
+*/
+```
+
+#### End-to-end encrypting files :new:
+
+```javascript
+import E2EE from '@chatereum/react-e2ee';
+
+//encrypts any buffer format file
+const file_buffer = new ArrayBuffer(16); //this should be the file in buffer format
+const encrypted = await E2EE.encryptFile(keys.public_key, file_buffer);
+/*
+would return something like:
+{
+    cipher_buffer: ArrayBuffer { byteLength: 16 }, //ArrayBuffer
+    aes_key: 9r2hnankal92/*gawaoaowrj38jma/daun, //base64
+    iv: 1hnfkalmnfinfkeif874fsf&bbdajwk9dkacam //base64
+}
+
+you can now wire this entire object to the recipient through eg: WebSockets
+*/
+
+//on the receiver's end
+//decrypting an encrypted file
+const decrypted = await E2EE.decryptFile(
+    encrypted.aes_key, 
+    encrypted.iv, 
+    keys.private_key, 
+    encrypted.cipher_buffer
+);
+/*
+would return the original message:
+decrypted = ArrayBuffer { byteLength: 16 }
+
+you can now use this ArrayBuffer to show maybe an image by converting it to a base64 data URL
 */
 ```
 

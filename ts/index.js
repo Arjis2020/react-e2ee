@@ -90,5 +90,55 @@ function decrypt(aes_key, iv, private_key, encrypted_text) {
         }
     }));
 }
-exports.default = { getKeys, encrypt, decrypt };
+function encryptFile(public_key, file_buffer) {
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            let rsa_crypto_key = yield (0, utils_1.getPublicCryptoKey)(public_key);
+            var AES_KEY = yield crypto.generateKey({
+                name: config_json_1.default.pre.name,
+                length: config_json_1.default.pre.length
+            }, true, ["encrypt", "decrypt"]);
+            const raw_aes_key = (0, utils_1.arrayBufferToBase64)(yield crypto.exportKey(config_json_1.default.pre.exports, AES_KEY));
+            let encoded_aes = (0, utils_1.encodeMessage)(raw_aes_key);
+            let iv = window.crypto.getRandomValues(new Uint8Array(16));
+            let aes_encrypted = yield crypto.encrypt({
+                name: config_json_1.default.pre.name,
+                iv
+            }, AES_KEY, file_buffer);
+            let rsa_encrypted_aes = yield crypto.encrypt({
+                name: config_json_1.default.main.name
+            }, rsa_crypto_key, encoded_aes);
+            resolve({
+                cipher_buffer: aes_encrypted,
+                aes_key: (0, utils_1.arrayBufferToBase64)(rsa_encrypted_aes),
+                iv: (0, utils_1.uIntToBase64)(iv)
+            });
+        }
+        catch (err) {
+            reject(err);
+        }
+    }));
+}
+function decryptFile(aes_key, iv, private_key, encrypted_buffer) {
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        try {
+            let rsa_crypto_key = yield (0, utils_1.getPrivateCryptoKey)(private_key);
+            let dec = new TextDecoder();
+            let aes_decrypted = yield crypto.decrypt({
+                name: config_json_1.default.main.name
+            }, rsa_crypto_key, (0, utils_1.base64ToArrayBuffer)(window.atob(aes_key)));
+            let decoded_aes = dec.decode(aes_decrypted);
+            let aes_crypto_key = yield (0, utils_1.getAESCryptoKey)(decoded_aes);
+            let decrypted = yield crypto.decrypt({
+                name: config_json_1.default.pre.name,
+                iv: (0, utils_1.base64ToUint8)(iv)
+            }, aes_crypto_key, encrypted_buffer);
+            resolve(decrypted);
+        }
+        catch (err) {
+            reject(err);
+        }
+    }));
+}
+exports.default = { getKeys, encrypt, decrypt, encryptFile, decryptFile };
 //# sourceMappingURL=index.js.map

@@ -132,4 +132,87 @@ function decrypt(aes_key: string, iv: string, private_key: string, encrypted_tex
     })
 }
 
-export default { getKeys, encrypt, decrypt }
+function encryptFile(public_key:string, file_buffer: ArrayBuffer) : Promise<{ cipher_buffer: ArrayBuffer, aes_key: string, iv: string }> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let rsa_crypto_key = await getPublicCryptoKey(public_key)
+
+            var AES_KEY = await crypto.generateKey(
+                {
+                    name: Config.pre.name,
+                    length: Config.pre.length
+                },
+                true,
+                ["encrypt", "decrypt"]
+            )
+
+            const raw_aes_key = arrayBufferToBase64(await crypto.exportKey(Config.pre.exports as Formats, AES_KEY))
+
+            let encoded_aes = encodeMessage(raw_aes_key)
+
+            let iv = window.crypto.getRandomValues(new Uint8Array(16));
+            let aes_encrypted = await crypto.encrypt(
+                {
+                    name: Config.pre.name,
+                    iv
+                },
+                AES_KEY,
+                file_buffer
+            )
+
+            let rsa_encrypted_aes = await crypto.encrypt(
+                {
+                    name: Config.main.name
+                },
+                rsa_crypto_key,
+                encoded_aes
+            )
+
+            resolve({
+                cipher_buffer: aes_encrypted,
+                aes_key: arrayBufferToBase64(rsa_encrypted_aes),
+                iv: uIntToBase64(iv)
+            })
+        }
+        catch (err) {
+            reject(err)
+        }
+    })
+}
+
+function decryptFile(aes_key:string, iv:string, private_key:string, encrypted_buffer:ArrayBuffer) : Promise<ArrayBuffer> {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let rsa_crypto_key = await getPrivateCryptoKey(private_key)
+            let dec = new TextDecoder()
+
+            let aes_decrypted = await crypto.decrypt(
+                {
+                    name: Config.main.name
+                },
+                rsa_crypto_key,
+                base64ToArrayBuffer(window.atob(aes_key))
+            )
+
+            let decoded_aes = dec.decode(aes_decrypted)
+
+            let aes_crypto_key = await getAESCryptoKey(decoded_aes)
+
+            let decrypted = await crypto.decrypt(
+                {
+                    name: Config.pre.name,
+                    iv: base64ToUint8(iv)
+                },
+                aes_crypto_key,
+                encrypted_buffer
+            )
+
+            resolve(decrypted)
+        }
+        catch (err) {
+            reject(err)
+        }
+    })
+}
+
+export default { getKeys, encrypt, decrypt, encryptFile, decryptFile }
