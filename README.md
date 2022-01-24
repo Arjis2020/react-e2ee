@@ -11,7 +11,7 @@ Use the package manager [npm](https://nmjs.com/) to install react-e2ee.
 npm install @chatereum/react-e2ee
 ```
 
-### What's New? :fire:
+## What's New? :fire:
 
 Changelogs ```v2.1.0```
 - ```encryptFile()``` function has the capability to end-to-end encrypt files. See **Usage**

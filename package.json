@@ -1,6 +1,6 @@
 {
   "name": "@chatereum/react-e2ee",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "A End-to-end encryption library for React and browser based JavaScript frameworks",
   "main": "ts/index.js",
   "types": "ts",
