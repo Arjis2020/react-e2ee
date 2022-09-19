@@ -1,6 +1,6 @@
 # React E2EE
 
-An end-to-end encryption package that is basically a wrapper package of ```SubtleCrypto``` library for browers (specifically React). See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto).
+An end-to-end encryption package that is basically a wrapper package of ```SubtleCrypto``` library for browsers (specifically React). See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto).
 
 ![typescript](https://img.icons8.com/color/48/000000/typescript.png) support is here! :smiley:
 
