@@ -1,6 +1,6 @@
 {
   "name": "@chatereum/react-e2ee",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "A End-to-end encryption library for React and browser based JavaScript frameworks",
   "main": "ts/index.js",
   "types": "ts",
@@ -12,7 +12,8 @@
   "scripts": {
     "start": "node app.js",
     "publish": "npm run build && git add . && git commit -m \"%npm_config_message%\" && git push origin main",
-    "build" : "npx tsc -p ."
+    "build": "rm -rf bin && npx tsc -p .",
+    "test": "jest"
   },
   "keywords": [
     "e2ee",
@@ -30,6 +31,17 @@
   "author": "Arjis Chakraborty",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-typescript": "^7.23.0",
+    "@peculiar/webcrypto": "^1.4.3",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.8.4",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
     "typescript": "^4.5.5"
   }
 }
