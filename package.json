@@ -11,7 +11,7 @@
   "homepage": "https://github.com/Arjis2020/react-e2ee",
   "scripts": {
     "start": "node app.js",
-    "publish": "npm run build && git add . && git commit -m \"%npm_config_message%\" && git push origin main",
+    "publish": "npm run build",
     "build": "rm -rf bin && npm run test && npx tsc -p .",
     "test": "jest"
   },
