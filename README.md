@@ -1,8 +1,6 @@
 # React E2EE
 
-An end-to-end encryption package that is basically a wrapper package of ```SubtleCrypto``` library for browsers (specifically React). See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto).
-
-![typescript](https://img.icons8.com/color/48/000000/typescript.png) support is here! :smiley:
+An end-to-end encryption package that is basically a wrapper package of ```SubtleCrypto``` library for browsers. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto).
 
 ## Installation
 
@@ -11,11 +9,19 @@ Use the package manager [npm](https://nmjs.com/) to install react-e2ee.
 npm install @chatereum/react-e2ee
 ```
 
+## Run test cases
+
+```bash
+npm run test
+```
+
 ## What's New? :fire:
 
-Changelogs ```v2.1.0```
-- ```encryptFile()``` function has the capability to end-to-end encrypt files. See **Usage**
--  ```decryptFile()``` function has the capability to decrypt encrypted files. See **Usage**
+Changelogs ```v3.0.0```
+- `encrypt`, `decrypt`, `encryptFile` and `decryptFile` functions are now **deprecated**. However, you can still use these functions.
+- added `encryptPlaintext`, `decryptForPlaintext`, `encryptFileBuffer` and `decryptFileBuffer` functions to replace corresponding deprecated functions. These functions will be improved in terms of performance and better error handling in future releases.
+- added test cases using `jest`
+- added better typescript documentation and intellisense
 
 ## Usage
 
@@ -36,7 +42,10 @@ would return something like:
 //encrypts any string format message
 //if you want to encrypt a format other than string, convert it into string first
 const message = "Made with 💙 by Arjis Chakraborty";
-const encrypted = await E2EE.encrypt(keys.public_key, message);
+const encrypted = await E2EE.encryptPlaintext({
+    public_key: keys.public_key, 
+    plain_text: message,
+});
 /*
 would return something like:
 {
@@ -50,12 +59,10 @@ you can now wire this entire object to the recipient through eg: WebSockets
 
 //on the receiver's end
 //decrypting an encrypted message
-const decrypted = await E2EE.decrypt(
-    encrypted.aes_key, 
-    encrypted.iv, 
-    keys.private_key, 
-    encrypted.cipher_text
-);
+const decrypted = await E2EE.decryptForPlaintext({
+    encrypted_text: encrypted, 
+    private_key: keys.private_key,
+});
 /*
 would return the original message:
 decrypted = "Made with 💙 by Arjis Chakraborty"
@@ -64,14 +71,17 @@ you can now show this message on the recipient's frontend
 */
 ```
 
-#### End-to-end encrypting files :new:
+#### End-to-end encrypting files
 
 ```javascript
 import E2EE from '@chatereum/react-e2ee';
 
 //encrypts any buffer format file
 const file_buffer = new ArrayBuffer(16); //this should be the file in buffer format
-const encrypted = await E2EE.encryptFile(keys.public_key, file_buffer);
+const encrypted = await E2EE.encryptFileBuffer({
+    public_key: keys.public_key,
+    file_buffer,
+});
 /*
 would return something like:
 {
@@ -85,12 +95,10 @@ you can now wire this entire object to the recipient through eg: WebSockets
 
 //on the receiver's end
 //decrypting an encrypted file
-const decrypted = await E2EE.decryptFile(
-    encrypted.aes_key, 
-    encrypted.iv, 
-    keys.private_key, 
-    encrypted.cipher_buffer
-);
+const decrypted = await E2EE.decryptFileBuffer({
+    encrypted_buffer: encrypted,
+    private_key: keys.private_key,
+});
 /*
 would return the original message:
 decrypted = ArrayBuffer { byteLength: 16 }
@@ -98,6 +106,8 @@ decrypted = ArrayBuffer { byteLength: 16 }
 you can now use this ArrayBuffer to show maybe an image by converting it to a base64 data URL
 */
 ```
+
+#### Note: If you are using deprecated functions in your code, check out the documentation for `v2.0`
 
 ## How it works
 
