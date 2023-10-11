@@ -15,9 +15,13 @@ import {
 
 export default {
     getKeys,
+    /** @deprecated */
     encrypt,
+    /** @deprecated */
     encryptFile,
+    /** @deprecated */
     decrypt,
+    /** @deprecated */
     decryptFile,
     encryptPlaintext,
     encryptFileBuffer,

@@ -1,1 +1,1 @@
-export type TFormats = "raw" | "spki" | "pkcs8";
+export type TFormats = 'raw' | 'spki' | 'pkcs8'

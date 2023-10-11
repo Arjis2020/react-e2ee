@@ -1,6 +1,6 @@
 export interface IKeyset {
-  public_key: string;
-  private_key: string;
+  public_key: string
+  private_key: string
 }
 
-export type TGetKeysHandler = () => Promise<IKeyset>;
+export type TGetKeysHandler = () => Promise<IKeyset>
