@@ -1,9 +1,8 @@
 {
   "name": "@chatereum/react-e2ee",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A End-to-end encryption library for React and browser based JavaScript frameworks",
-  "main": "ts/index.js",
-  "types": "ts",
+  "main": "bin/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Arjis2020/react-e2ee"
@@ -15,6 +14,9 @@
     "build": "rm -rf bin && npm run test && npx tsc -p .",
     "test": "jest"
   },
+  "files": [
+    "bin/"
+  ],
   "keywords": [
     "e2ee",
     "chat",
