@@ -17,11 +17,8 @@ npm run test
 
 ## What's New? :fire:
 
-Changelogs ```v3.0.0```
-- `encrypt`, `decrypt`, `encryptFile` and `decryptFile` functions are now **deprecated**. However, you can still use these functions.
-- added `encryptPlaintext`, `decryptForPlaintext`, `encryptFileBuffer` and `decryptFileBuffer` functions to replace corresponding deprecated functions. These functions will be improved in terms of performance and better error handling in future releases.
-- added test cases using `jest`
-- added better typescript documentation and intellisense
+Changelogs ```v3.0.1```
+- Fix for `Cannot find module '@chatereum/react-e2ee' or its corresponding type declarations` in typescript projects
 
 ## Usage
 
